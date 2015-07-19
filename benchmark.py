@@ -2,22 +2,19 @@
 
 import primes
 import random
+import timeit
 
 def random_odd_number(min_bits, max_bits):
     min_val = pow(2,min_bits - 1) + 1
     max_val = pow(2,max_bits) + 1
     return random.SystemRandom().randrange(min_val, max_val, 2)
 
-
-def time_function_call(callback):
-    callback()
-    return 5 # TODO actually time the call to the function and return the desired statistic
-
 def benchmark(name, callback, samples):
     print()
     print('starting benchmark for "', name, '":')
 
-    times = [time_function_call(callback) for i in range(samples)]
+    t = timeit.Timer(callback)
+    times = t.repeat(samples,1)
 
     print('end of benchmark for "', name, '".')
     print()
