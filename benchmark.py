@@ -1,9 +1,12 @@
 #!/bin/python
 
 import primes
+import random
 
 def random_odd_number(min_bits, max_bits):
-    return 3 # TODO actually generate a random number with 'bits' bits with the first and last bit set to 1
+    min_val = pow(2,min_bits - 1) + 1
+    max_val = pow(2,max_bits) + 1
+    return random.SystemRandom().randrange(min_val, max_val, 2)
 
 
 def time_function_call(callback):
