@@ -29,9 +29,9 @@ def create_graph(graph):
     plt.plot(x, y, 'ro')
     plt.show()
 
-if len(sys.argv) == 2:
-    create_graph(read_from_file(sys.argv[1]))
-else:
-    print(len(sys.argv))
+if len(sys.argv) < 2:
     print('This is not the chart you are looking for o_O')
+else:
+    for i in range(1, len(sys.argv)):
+        create_graph(read_from_file(sys.argv[i]))
 
