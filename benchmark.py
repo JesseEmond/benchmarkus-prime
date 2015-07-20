@@ -28,9 +28,9 @@ def benchmark(name, test, rand, samples):
 
     return times
 
-def write_to_file(times, name):
-    f = open(name, 'w')
-    json.dump(times, f)
+def write_to_file(times, name, filename):
+    f = open(filename, 'w')
+    json.dump({'name': name, 'data': times}, f)
     f.close()
 
 SAMPLES  = 1
@@ -38,9 +38,9 @@ MIN_BITS = 512
 MAX_BITS = 1024
 
 trial_division   = benchmark('Trial Division', primes.trial_division, lambda: random_odd_number(MIN_BITS, MAX_BITS), SAMPLES)
-miller_rabin     = benchmark('Miller-Rabin', primes.miller_rabin, lambda: random_odd_number(MIN_BITS, MAX_BITS), SAMPLES)
-solovay_strassen = benchmark('Solovay-Strassen', primes.solovay_strassen, lambda: random_odd_number(MIN_BITS, MAX_BITS), SAMPLES)
+#miller_rabin     = benchmark('Miller-Rabin', primes.miller_rabin, lambda: random_odd_number(MIN_BITS, MAX_BITS), SAMPLES)
+#solovay_strassen = benchmark('Solovay-Strassen', primes.solovay_strassen, lambda: random_odd_number(MIN_BITS, MAX_BITS), SAMPLES)
 
-write_to_file(trial_division, 'trial_division')
+write_to_file(trial_division, 'Trial Division','trial_division')
 
 # TODO output data to file for graph-generator to use?
