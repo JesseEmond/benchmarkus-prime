@@ -31,7 +31,7 @@ def miller_rabin(n, rounds = 40):
     s = 0
     d = n-1
     while is_even(d):
-        d /= 2
+        d //= 2
         s += 1
 
     for i in range(rounds):
