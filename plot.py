@@ -23,7 +23,7 @@ def create_graph(graph):
         min_x = min(min_x, i[0])
         max_y = max(max_y, i[1])
     plt.title(graph['name'])
-    plt.xlabel('nbr of bits')
+    plt.xlabel('nbr')
     plt.ylabel('duration (secs)')
     plt.axis([min_x * 0.95, max_x * 1.05, 0 - max_y * 0.05, max_y * 1.05])
     plt.plot(x, y, 'ro')
