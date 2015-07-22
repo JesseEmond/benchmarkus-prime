@@ -9,8 +9,8 @@ def trial_division(n):
 
 # Tests if 'n' is a strong pseudoprime using the Miller-Rabin probabilistic algorithm.
 #
-# The following properties assume that 'n' is prime (if a property fails, then we
-# know 'n' is composite).
+# If 'n' is prime, then the following properties hold. If one of them fails,
+# then we know 'n' is composite.
 #
 # Randomly picks 'rounds' bases.
 # For each base 'a', start with Fermat's little theorem (a^(n-1) = 1 (mod n)).
@@ -51,9 +51,51 @@ def miller_rabin(n, rounds = 40):
 
     return True
 
+# Tests if 'n' is probably prime using the Solovay-Strassen probabilistic algorithm.
+#
+# If 'n' is prime, the Euler's criterion holds for any 'a' (if it fails, 'n' is composite):
+# a ^ ( (n-1)/2 ) = Legendre(a, n)
+# Where Legendre stands for Legendre's symbol.
+# Since we don't know if n is prime, we'll use Jacobi's symbol (a generalization
+# of Legendre's symbol).
+#
+# Randomly pick 'rounds' bases.
+# For each base 'a', see if the criterion holds. If not, 'n' is composite.
+# If the criterion holds for all bases, 'n' is considered probably prime.
 def solovay_strassen(n, rounds = 80):
-    return False #TODO
+    for i in range(rounds):
+        a = random.randrange(2,n)
+        x = pow(a, (n-1)//2, n)
+        jacobi = jacobi_symbol(a, n)
+        if jacobi < 0: jacobi += n # we want n-1 instead of -1 (mod n)
+        if x != jacobi: return False
 
+    return True
 
 def is_even(n):
     return n & 1 == 0
+
+# Calculates the Jacobi symbol of 'a' and 'n'.
+#
+# Note: the comments of the form '(i)' indicate what property
+# was used from this: https://en.wikipedia.org/wiki/Jacobi_symbol#Properties
+def jacobi_symbol(a, n):
+    j = 1
+
+    while a > 0:
+        while is_even(a):
+            # extract (2/n) using (4)
+            a //= 2
+            # evaluate (2/n) using (8)
+            if n % 8 == 3 or n % 8 == 5:
+                j = -j
+
+        # swap, by the law of quadratic reciprocity (6)
+        if n % 4 == 3 and a % 4 == 3:
+            j = -j
+        a, n = n, a
+
+        a = a % n # can reduce using (2)
+
+    # n != 1 means that gcd(a,n) != 1 => jacobi = 0
+    return j if n == 1 else 0

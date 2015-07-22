@@ -51,9 +51,8 @@ trial_division   = benchmark('Trial Division', primes.trial_division, lambda: ra
 MIN_BITS = 512
 MAX_BITS = 1024
 miller_rabin     = benchmark('Miller-Rabin', primes.miller_rabin, lambda: random_odd_number(MIN_BITS, MAX_BITS), SAMPLES)
-#solovay_strassen = benchmark('Solovay-Strassen', primes.solovay_strassen, lambda: random_odd_number(MIN_BITS, MAX_BITS), SAMPLES)
+solovay_strassen = benchmark('Solovay-Strassen', primes.solovay_strassen, lambda: random_odd_number(MIN_BITS, MAX_BITS), SAMPLES)
 
 write_to_file(trial_division, sqrt_bits, 'Trial Division','trial_division.plot')
 write_to_file(miller_rabin, log_cubed_bits, 'Miller-Rabin', 'miller_rabin.plot')
-
-# TODO output data to file for graph-generator to use?
+write_to_file(solovay_strassen, log_cubed_bits, 'Solovay-Strassen', 'solovay_strassen.plot')
