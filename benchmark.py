@@ -1,9 +1,7 @@
 #!/bin/python
 
 import primes
-import random
-import timeit
-import json
+import random, timeit, json, math
 
 def random_odd_number(min_bits, max_bits):
     bits = random.SystemRandom().randrange(min_bits, max_bits)
@@ -29,10 +27,23 @@ def benchmark(name, test, rand, samples):
 
     return times
 
-def write_to_file(times, name, filename):
+def write_to_file(times, reference_function, name, filename):
     f = open(filename, 'w')
-    json.dump({'name': name, 'data': times}, f)
+    reference = create_reference_data(times, reference_function)
+    json.dump({'name': name, 'data': times, 'reference_data': reference}, f)
     f.close()
+
+def create_reference_data(times, function):
+    mid = times[len(times)//2]
+    # get a constant to produce a nice reference
+    constant = mid[1] / function(mid[0])
+    return [(point[0], constant * function(point[0])) for point in times]
+
+def sqrt_bits(bits):
+    return math.sqrt(math.pow(2,bits))
+
+def log_cubed_bits(bits):
+    return math.pow(bits, 3) # log(2^bits) = bits
 
 SAMPLES  = 3000
 
@@ -42,7 +53,7 @@ MAX_BITS = 1024
 miller_rabin     = benchmark('Miller-Rabin', primes.miller_rabin, lambda: random_odd_number(MIN_BITS, MAX_BITS), SAMPLES)
 #solovay_strassen = benchmark('Solovay-Strassen', primes.solovay_strassen, lambda: random_odd_number(MIN_BITS, MAX_BITS), SAMPLES)
 
-write_to_file(trial_division, 'Trial Division','trial_division.plot')
-write_to_file(miller_rabin, 'Miller-Rabin', 'miller_rabin.plot')
+write_to_file(trial_division, sqrt_bits, 'Trial Division','trial_division.plot')
+write_to_file(miller_rabin, log_cubed_bits, 'Miller-Rabin', 'miller_rabin.plot')
 
 # TODO output data to file for graph-generator to use?

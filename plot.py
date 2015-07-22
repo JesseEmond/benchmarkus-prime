@@ -15,11 +15,16 @@ def create_graph(graph):
     for i in graph['data']:
         x.append(i[0])
         y.append(i[1])
+
+    ref_x = [point[0] for point in graph['reference_data']]
+    ref_y = [point[1] for point in graph['reference_data']]
+
     plt.title(graph['name'] + ' (log-log)')
     plt.xlabel('number (bits)')
     plt.ylabel('duration (secs) (log)')
     plt.yscale('log', basey=2)
     plt.plot(x, y, 'ro')
+    plt.plot(ref_x, ref_y, 'bo')
     plt.show()
 
 if len(sys.argv) < 2:
