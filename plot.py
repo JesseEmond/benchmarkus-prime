@@ -1,7 +1,6 @@
 #!/bin/python
 
-import sys
-import json
+import sys, json
 import matplotlib.pyplot as plt
 
 def read_from_file(name):
@@ -13,19 +12,13 @@ def read_from_file(name):
 def create_graph(graph):
     x = []
     y = []
-    max_x =0
-    max_y = 0
-    min_x = sys.maxsize
     for i in graph['data']:
         x.append(i[0])
         y.append(i[1])
-        max_x = max(max_x, i[0])
-        min_x = min(min_x, i[0])
-        max_y = max(max_y, i[1])
-    plt.title(graph['name'])
-    plt.xlabel('nbr')
-    plt.ylabel('duration (secs)')
-    plt.axis([min_x * 0.95, max_x * 1.05, 0 - max_y * 0.05, max_y * 1.05])
+    plt.title(graph['name'] + ' (log-log)')
+    plt.xlabel('number (bits)')
+    plt.ylabel('duration (secs) (log)')
+    plt.yscale('log', basey=2)
     plt.plot(x, y, 'ro')
     plt.show()
 
